@@ -7,7 +7,7 @@ const mongoClient = mongodb.MongoClient;
 const objectId = mongodb.ObjectID;
 const bcrypt = require('bcrypt');
 const dbUrl = process.env.DB_URL || "mongodb://127.0.0.1:27017"; 
-const port = process.env.PORT || 5200;
+const port = process.env.PORT || 5404;
 
 app.use(express.json());
 app.use(cors())
@@ -18,13 +18,13 @@ app.post('/register',async (req,res)=>{
       let db = clientInfo.db("credentials");
       let found =await db.collection("users").findOne({email:req.body.email});
       if(found){
-        res.status(400).json({message:"User already exists."})
+       return res.status(400).json({message:"User already exists."})
       }else{
         let salt = await bcrypt.genSalt(10);
         let hash = await bcrypt.hash(req.body.password,salt);
         req.body.password = hash; 
         await db.collection('users').insertOne(req.body);
-        res.status(200).json({message:"User is created"}); 
+        return res.status(200).json({message:"User is created"}); 
       }
       clientInfo.close();
     }   
@@ -41,16 +41,15 @@ app.post("/login",async (req,res)=>{
       if(found){
        let verify = await bcrypt.compare(req.body.password,found.password);
        if(verify){
-           res.status(200).json({messsage:"Login Successfull"});
+        return res.status(200).json({messsage:"Login Successfull"});
        }
        else{
-        res.status(400).json({messsage:"Login unsuccessfull"});
-        return;
+        return res.status(400).json({messsage:"Login unsuccessfull"});    
        }
       }
       else{
-          res.send(404).json({messsage:"User is not registered"});
-          return;
+        return res.send(404).json({messsage:"User is not registered"});
+          
       }
       clientInfo.close();
       }
