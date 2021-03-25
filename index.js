@@ -45,10 +45,12 @@ app.post("/login",async (req,res)=>{
        }
        else{
         res.status(400).json({messsage:"Login unsuccessfull"});
+        return;
        }
       }
       else{
           res.send(404).json({messsage:"User is not registered"});
+          return;
       }
       clientInfo.close();
       }
