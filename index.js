@@ -1,14 +1,16 @@
 const express = require('express');
 const app = express();
+var cors = require('cors')
 require('dotenv').config();
 const mongodb = require('mongodb');
 const mongoClient = mongodb.MongoClient;
 const objectId = mongodb.ObjectID;
 const bcrypt = require('bcrypt');
 const dbUrl = process.env.DB_URL || "mongodb://127.0.0.1:27017"; 
-const port = process.env.PORT || 5011;
+const port = process.env.PORT || 4100;
 
 app.use(express.json());
+app.use(cors())
 
 app.post('/register',async (req,res)=>{
     try{
