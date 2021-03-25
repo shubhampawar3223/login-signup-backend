@@ -7,7 +7,7 @@ const mongoClient = mongodb.MongoClient;
 const objectId = mongodb.ObjectID;
 const bcrypt = require('bcrypt');
 const dbUrl = process.env.DB_URL || "mongodb://127.0.0.1:27017"; 
-const port = process.env.PORT || 4500;
+const port = process.env.PORT || 5200;
 
 app.use(express.json());
 app.use(cors())
@@ -50,6 +50,7 @@ app.post("/login",async (req,res)=>{
       else{
           res.send(404).json({messsage:"User is not registered"});
       }
+      clientInfo.close();
       }
       catch(e){
          console.log(e);
